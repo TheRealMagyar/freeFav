@@ -1,21 +1,21 @@
 # freeFav
 
-Equicord userplugin. Discord Favorites Nitro nélkül: a kliens 200-ig engedi a hozzáadást, a Discord által ingyen tárolt 3 csatornát szinkronban hagyja, a többit ezen a gépen tartja.
+Equicord userplugin that unlocks Discord Favorites without Nitro. The client allows up to 200 favorites. The three channels Discord stores for free stay in sync, and the rest stay on this machine.
 
-A Favorites a szerverlista tetején gyűjti a kitűzött csatornákat, DM-eket és csoportos DM-eket. Nitro (tier 2) nélkül a kliens 3 csatornánál megáll, és a szerver a 3 fölötti mentést 403-mal utasítja el. A kategóriák nem számítanak bele a 3-ba.
+Favorites collects pinned channels, DMs, and group DMs at the top of the server list. Without Nitro (tier 2) the client stops at 3 channels, and the server rejects anything past that with a 403. Categories do not count toward the 3.
 
-## Mit csinál
+## What it does
 
-- A kliens limitjét 200-ra emeli, és elrejti a Nitro-upsellt.
-- Mentéskor legfeljebb 3 csatornát, plusz azok szülő kategóriáit küldi el Discordnak. Ezek telefonon is megmaradnak.
-- A 3 fölötti favorite-okat helyben tárolja, fiókonként. Újraindítás után is megvannak.
-- Törlés, sorrend és becenév a helyi listán is működik. Ha egy szerveren tárolt hely felszabadul, egy helyi favorite lép a helyére.
+- Raises the client limit to 200 and hides the Nitro upsell.
+- On save, sends at most 3 channels plus their parent categories to Discord. Those still show up on your phone.
+- Stores anything past those 3 locally, per account. They survive a restart.
+- Remove, reorder, and nicknames work on the local list. When a server slot opens, a local favorite takes it.
 
-A helyi lista csak ezen az Equicord kliensen látszik. A telefon a Discord által tárolt 3 csatornát mutatja.
+The local list is visible only in this Equicord client. Your phone shows the 3 channels Discord stored.
 
-## Telepítés
+## Install
 
-Equicord forrásbuild kell. A kész installer `.asar` nem tölti be. Az `install.sh` az `index.tsx` és `logic.ts` fájlt másolja a `src/userplugins/freeFav` mappába, mert a build csak a forrásfán belüli plugint fordítja.
+A source build of Equicord is required. The stock installer `.asar` cannot load this plugin. `install.sh` copies `index.tsx` and `logic.ts` into `src/userplugins/freeFav`, because the build only compiles plugins inside the Equicord source tree.
 
 ```bash
 ./install.sh
@@ -23,18 +23,18 @@ cd "$HOME/Documents/Equicord"
 pnpm build
 ```
 
-Indítsd újra a Discordot, majd kapcsold be a **FreeFav** plugint: **Settings → Plugins**. A Favorites ikon a szerverlista tetején van. Ha nem látszik: **User Settings → Chat → Show Favorites Server**.
+Restart Discord, then enable **FreeFav** under **Settings → Plugins**. The Favorites icon sits at the top of the server list. If it is missing: **User Settings → Chat → Show Favorites Server**.
 
-Jobb klikk egy csatornán vagy DM-en, majd **Add to Favorites**.
+Right-click a channel or DM, then choose **Add to Favorites**.
 
-Ha az Equicord máshol van: `EQUICORD=/path/to/Equicord ./install.sh`
+If Equicord lives somewhere else: `EQUICORD=/path/to/Equicord ./install.sh`
 
-## Fejlesztés
+## Development
 
 ```bash
 node --experimental-strip-types --test tests/logic.test.ts
 ```
 
-A teszt nem éri el a Discordot. A patch a kliens `favoriteLimit:…?200:3` és `FavoriteStore` kódjára illeszkedik, ezért egy Discord-frissítés után újra kell nézni.
+The test does not contact Discord. The patch matches the client's `favoriteLimit:…?200:3` check and `FavoriteStore`, so it needs another look after a Discord update.
 
 GPL-3.0-or-later.
